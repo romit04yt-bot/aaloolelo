@@ -1,1 +1,246 @@
 # aaloolelo
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priority Message for Tishu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #ffecd2);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 40px;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            color: #d63384;
+            font-family: 'Pacifico', cursive;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+            transition: all 0.3s ease;
+        }
+
+        p {
+            color: #4a4a4a;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            font-weight: 600;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+
+        .hero-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 15px;
+            border: 4px solid white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            object-fit: cover;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-yes {
+            background: #ff3366;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.05);
+            background: #e62e5c;
+        }
+
+        .btn-no {
+            background: white;
+            color: #ff3366;
+            border: 2px solid #ff3366;
+        }
+        
+        /* Glitch Effect Classes */
+        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        .glitch-text { font-family: 'Courier New', monospace; color: red !important; }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-card" id="card">
+        <img src="https://i.pinimg.com/1200x/e4/5f/5d/e45f5d2b3f2bd9de4c5aa12504a5f283.jpg" class="hero-img" id="visual">
+        
+        <h1 id="title">Hey Tishu...</h1>
+        <p id="message">Will you be my Valentine? 🌹<br>(Sahi option choose karna)</p>
+        
+        <div class="btn-container" id="buttons">
+            <button class="btn btn-yes" id="yesBtn" onclick="nextYesStep()">YES ❤️</button>
+            <button class="btn btn-no" id="noBtn" onclick="nextNoStep()">NO 😒</button>
+        </div>
+    </div>
+
+    <script>
+        // Variables to track "Layers"
+        let noCount = 0;
+        let yesStep = 0;
+
+        // Elements
+        const title = document.getElementById('title');
+        const message = document.getElementById('message');
+        const visual = document.getElementById('visual');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const card = document.getElementById('card');
+
+        // --- THE "NO" PATH (STRONG & DOMINATING) ---
+        function nextNoStep() {
+            noCount++;
+            card.classList.add('shake');
+            setTimeout(() => card.classList.remove('shake'), 500);
+
+            if (noCount === 1) {
+                // Layer 1: Sarcastic Warning (Side Eye Bear)
+                visual.src = "https://i.pinimg.com/1200x/18/ea/97/18ea97a904d8e03dd9497d4b4bb91ef8.jpg"; 
+                title.innerText = "Tum Serious ho ? 🤨";
+                message.innerText = "Bolte hai chashma khareed lo, theek se dikhegaa... Sahi button 'PINK' wala hai.";
+                noBtn.innerText = "Mujhe PINK nahi pasand...";
+            } 
+            else if (noCount === 2) {
+                // Layer 2: Possessive Threat (Angry Bear)
+                visual.src = "https://i.pinimg.com/originals/96/49/72/9649725a2c7afeaa27c263549eee3f15.gif"; 
+                title.innerText = "Kut Denge Tumko! 😑";
+                message.innerText = "Mere jaisa aur kon milega itna pyara? Chupchap YES dabao warna hum tumhara daba denge (.)(.) 😏 zor se ...";
+                noBtn.innerText = "NAHI DABAAUNGI !";
+                yesBtn.style.transform = "scale(1.2)";
+            } 
+            else if (noCount === 3) {
+                // Layer 3: THE GLITCH (Force Yes - Hacker Style)
+                visual.src = "https://i.pinimg.com/736x/21/83/ac/2183aca99d06cf549760806b43558290.jpg"; 
+                title.innerText = "ACCESS DENIED ⚠️";
+                title.classList.add('glitch-text');
+                message.innerText = "System Message: 'Tum sirf meri ho.' End of discussion.";
+                message.classList.add('glitch-text');
+                
+                // Hide No Button
+                noBtn.style.display = "none";
+                yesBtn.innerText = "Haan, YUSS! ❤️";
+                yesBtn.style.width = "100%";
+                yesBtn.style.transform = "scale(1.1)";
+            }
+        }
+
+        // --- THE "YES" PATH (ROMANTIC BUT CONFIDENT) ---
+        function nextYesStep() {
+            yesStep++;
+
+            if (yesStep === 1) {
+                // Layer 1: The Condition (Thinking Bear)
+                visual.src = "https://i.pinimg.com/736x/6a/fe/7c/6afe7ce4d6419d99f344f78580b5ea56.jpg"; 
+                title.innerText = "Good Girl! 😘";
+                message.innerText = "Par itni aasani se nahi... Ek shart hai meri. Manogi?";
+                
+                // Change buttons
+                noBtn.style.display = "none"; 
+                yesBtn.innerText = "Kya Shart Hai? 🤔";
+            } 
+            else if (yesStep === 2) {
+                // Layer 2: The Commitment (Hug Bear)
+                visual.src = "https://i.pinimg.com/1200x/29/fb/d9/29fbd9af5c88f62433637de3f866c53d.jpg"; 
+                title.innerText = "Pucchi Deal 🤝";
+                message.innerText = "Humko jhelna padega, Humko Roz geeli pucchi dena hoga. Manzoor?";
+                
+                yesBtn.innerText = "Manzoor Hai! ❤️";
+            } 
+            else if (yesStep === 3) {
+                // Layer 3: FINAL CELEBRATION (Kiss Bear)
+                visual.src = "https://i.pinimg.com/736x/88/cf/4c/88cf4cb6d9f84f5c2f646b3a4dee1590.jpg"; 
+                title.innerText = "Good girl 😚";
+                title.classList.remove('glitch-text'); 
+                message.innerText = "Ab tum meri BHE LEN TAAIN ban gayi . I love you! 💗";
+                
+                // Hide button
+                yesBtn.style.display = "none";
+                
+                // Start Confetti
+                startConfetti();
+            }
+        }
+
+        function startConfetti() {
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function random(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) { return clearInterval(interval); }
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
+</body>
+</html>
